@@ -15,6 +15,7 @@ jobs:
         with:
           repository: ggerganov/llama.cpp
           path: llama.cpp
+          fetch-depth: 0 # fetch all history to get tags as well
 
       - name: Get llama.cpp tag (build number)
         id: tag
