@@ -1,0 +1,49 @@
+name: Build and Push Docker Image
+
+on:
+  schedule:
+    - cron: '0 5 * * *'  # everyday at 5 AM UTC
+  workflow_dispatch: # on demand
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout llama.cpp repository
+        uses: actions/checkout@v4
+        with:
+          repository: ggerganov/llama.cpp
+          path: llama.cpp
+
+      - name: Get llama.cpp tag (build number)
+        id: tag
+        working-directory: llama.cpp
+        run: echo "build_number=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
+
+      - name: Checkout my repository
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU # to support more platforms that amd64
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm64,arm
+
+      - name: Set up Docker Buildx # for cross-platform builds
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push to Docker Hub
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          push: true
+          tags: |
+            ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_REPOSITORY }}:${{ steps.tag.outputs.build_number }}
+            ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_REPOSITORY }}:latest
