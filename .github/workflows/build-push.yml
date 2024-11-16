@@ -24,7 +24,6 @@ jobs:
           tag=$(git describe --tags --abbrev=0)
           exit_code=$?
           if [ $exit_code -ne 0 ]; then
-            echo "Failed to retrieve tag."
             exit $exit_code
           fi
           echo "build_number=$tag" >> $GITHUB_OUTPUT
