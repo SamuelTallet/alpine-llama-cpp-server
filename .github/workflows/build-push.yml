@@ -20,7 +20,9 @@ jobs:
       - name: Get llama.cpp tag (build number)
         id: tag
         working-directory: llama.cpp
-        run: echo "build_number=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
+        run: |
+          tag=$(git describe --tags --abbrev=0) || exit 1
+          echo "build_number=$tag" >> $GITHUB_OUTPUT
 
       - name: Checkout my repository
         uses: actions/checkout@v4
