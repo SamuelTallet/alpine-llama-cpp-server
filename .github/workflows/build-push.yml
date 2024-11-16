@@ -15,7 +15,7 @@ jobs:
         with:
           repository: ggerganov/llama.cpp
           path: llama.cpp
-          fetch-tags: true
+          fetch-depth: 50 # fetch enough commits to get last tag
 
       - name: Get llama.cpp tag (build number)
         id: tag
