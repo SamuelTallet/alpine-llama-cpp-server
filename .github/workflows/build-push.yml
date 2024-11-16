@@ -21,11 +21,7 @@ jobs:
         id: tag
         working-directory: llama.cpp
         run: |
-          tag=$(git describe --tags --abbrev=0)
-          exit_code=$?
-          if [ $exit_code -ne 0 ]; then
-            exit $exit_code
-          fi
+          tag=$(git describe --tags --abbrev=0) || exit $?
           echo "build_number=$tag" >> $GITHUB_OUTPUT
 
       - name: Checkout my repository
