@@ -11,9 +11,8 @@
 ## Use cases
 
 This Docker image is particularly suited for:
-- Alpine-based application images, which require a HTTP inference server.
 - Servers that cannot do GPU-accelerated inference, e.g. a CPU-only VPS.
-- Environments with limited disk space.
+- Environments with limited disk space or low bandwidth.
 
 ## Examples
 
