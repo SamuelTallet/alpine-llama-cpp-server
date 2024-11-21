@@ -16,26 +16,42 @@ This Docker image is particularly suited for:
 
 ## Examples
 
-#### Standalone, online model
+#### Standalone
 
-You can start a local standalone HTTP inference server who listens at the port 50000 and leverages a Qwen2.5-Coder 1.5B quantized model hosted, for example on [Hugging Face](https://huggingface.co/):
+You can start a local standalone HTTP inference server who listens at the port 50000 and leverages the [SmolLM2 1.7B quantized model](https://huggingface.co/HuggingFaceTB/SmolLM2-1.7B-Instruct-GGUF) available on Hugging Face (HF) with this:
 
 ```bash
-docker run --name alpine-llama -p 50000:8080 -e LLAMA_ARG_MODEL_URL=https://huggingface.co/bartowski/Qwen2.5-Coder-1.5B-Instruct-GGUF/resolve/main/Qwen2.5-Coder-1.5B-Instruct-Q4_K_M.gguf -e LLAMA_ARG_CTX_SIZE=2048 samueltallet/alpine-llama-cpp-server
+docker run --name alpine-llama --publish 50000:8080 --env LLAMA_ARG_HF_REPO=HuggingFaceTB/SmolLM2-1.7B-Instruct-GGUF --env LLAMA_ARG_HF_FILE=smollm2-1.7b-instruct-q4_k_m.gguf --env LLAMA_API_KEY=sk-xxxx --env LLAMA_ARG_ALIAS=smollm2-1.7b samueltallet/alpine-llama-cpp-server
 ```
 
-Once the GGUF model file is downloaded (and cached in the Docker container filesystem), you can query the OpenAI-compatible Chat Completions API endpoint exposed:
+Once the GGUF model file is downloaded from HF (and cached in the Docker container filesystem), you can query your local endpoint using the official [OpenAI TS & JS API library](https://www.npmjs.com/package/openai):
 
-```bash
-curl http://127.0.0.1:50000/v1/chat/completions \
-  -d '{
-    "messages": [
-      { "role": "user", "content": "Explain GraphDB with simple words." }
+```js
+import OpenAI from 'openai'
+
+const client = new OpenAI({
+  apiKey: 'sk-xxxx', // Warning: in production, use a strong key.
+  baseURL: 'http://127.0.0.1:50000/v1',
+})
+
+async function runInference() {
+  const stream = await client.chat.completions.create({
+    messages: [
+      { role: 'user', content: 'Summarize Alice In Wonderland.' },
     ],
-    "temperature": 0.3,
-    "max_tokens": 100
-  }'
-# > GraphDB is a type of database that stores and manages data in a way that is similar to the way people think about things in the world. It uses a graph data model, which means that it stores data in nodes and edges, where nodes represent entities and edges represent relationships between those entities [...]
+    model: 'smollm2-1.7b',
+    temperature: 0.5,
+    stream: true,
+    max_tokens: 100,
+  })
+
+  for await (const chunk of stream) {
+    process.stdout.write(chunk.choices[0]?.delta?.content || '')
+  }
+}
+
+runInference()
+// > Alice in Wonderland is a children's novel written by Lewis Carroll, published in 1865. The story follows Alice as she falls down a rabbit hole and enters a fantastical world inhabited by strange creatures, talking animals, and absurd situations. Alice must navigate this bizarre realm, encountering a cast of eccentric characters, including the Cheshire Cat, the March Hare, and the Dormouse [...]
 ```
 
 ## License
