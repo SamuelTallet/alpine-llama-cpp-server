@@ -31,7 +31,7 @@ docker run --name alpine-llama --publish 50000:8080 \
 
 Once the GGUF model file is downloaded from HF (and cached in the Docker container filesystem), you can query your local endpoint using the official [OpenAI TS & JS API library](https://www.npmjs.com/package/openai).
 
-To test this model's structured output capabilities, execute the following Node.js script who extracts metadata from a product description according to a predefined JSON schema:
+To check this model's structured output capabilities, execute the following Node.js script who extracts metadata from a product description according to a predefined JSON schema:
 
 ```js
 import OpenAI from "openai";
