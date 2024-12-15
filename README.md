@@ -16,25 +16,24 @@ This Docker image is particularly suited for:
 
 ## Examples
 
-#### Standalone
+### Standalone
 
 You can start a local standalone HTTP inference server who listens at the port 50000 and leverages the [Qwen2.5-Coder 1.5B quantized model](https://huggingface.co/bartowski/Qwen2.5-Coder-1.5B-Instruct-GGUF) available on Hugging Face (HF) with:
 
 ```bash
 docker run --name alpine-llama --publish 50000:8080 \
-    --env LLAMA_ARG_HF_REPO=bartowski/Qwen2.5-Coder-1.5B-Instruct-GGUF \
-    --env LLAMA_ARG_HF_FILE=Qwen2.5-Coder-1.5B-Instruct-Q4_K_M.gguf \
-    --env LLAMA_API_KEY=sk-xxxx \
-    --env LLAMA_ARG_ALIAS=qwen2.5-coder-1.5b \
-    samueltallet/alpine-llama-cpp-server
+  --env LLAMA_ARG_HF_REPO=bartowski/Qwen2.5-Coder-1.5B-Instruct-GGUF \
+  --env LLAMA_ARG_HF_FILE=Qwen2.5-Coder-1.5B-Instruct-Q4_K_M.gguf \
+  --env LLAMA_API_KEY=sk-xxxx \
+  --env LLAMA_ARG_ALIAS=qwen2.5-coder-1.5b \
+  samueltallet/alpine-llama-cpp-server
 ```
 
 Once the GGUF model file is downloaded from HF (and cached in the Docker container filesystem), you can query your local endpoint using the official [OpenAI TS & JS API library](https://www.npmjs.com/package/openai).
 
-For instance, you can execute the following Node.js script to extract the metadata of a product description as a JSON object according to a predefined schema:
+To test this model's structured output capabilities, execute the following Node.js script who extracts metadata from a product description according to a predefined JSON schema:
 
 ```js
-// extract_product_meta.mjs
 import OpenAI from "openai";
 
 const inferenceClient = new OpenAI({
@@ -81,6 +80,43 @@ async function extractProductMeta() {
 extractProductMeta();
 // > { "name": "UrbanShoes 3.0", "materials": ["apple leather", "recycled rubber"], "colors": ["brown", "green"], "price": 654.90, "currency": "EUR" }
 ```
+
+### With a GUI
+
+If you want a fully-featured AI chat GUI, you can use this *docker-compose.yml* file who combines the Alpine LLaMA server with the [LobeChat](https://github.com/lobehub/lobe-chat) interface:
+
+```yaml
+services:
+  alpine-llama:
+    image: samueltallet/alpine-llama-cpp-server
+    container_name: alpine-llama
+    volumes:
+      - ./models/HuggingFaceTB/smollm2-1.7b-instruct-q4_k_m.gguf:/opt/smollm2-1.7b.gguf:ro
+    environment:
+      - LLAMA_ARG_MODEL=/opt/smollm2-1.7b.gguf
+      - LLAMA_ARG_ALIAS=smollm2-1.7b
+      - LLAMA_API_KEY=sk-xxxx # In production, be sure to use your own strong secret key.
+
+  lobe-chat:
+    image: lobehub/lobe-chat
+    container_name: lobe-chat
+    depends_on:
+      - alpine-llama
+    environment:
+      - OPENAI_PROXY_URL=http://alpine-llama:8080/v1
+      - OPENAI_API_KEY=sk-xxxx
+      - OPENAI_MODEL_LIST=smollm2-1.7b
+    ports:
+      - "3210:3210"
+```
+
+Prior to run `docker compose up`, you will need to:
+
+Download the [smollm2-1.7b-instruct-q4_k_m.gguf](https://huggingface.co/HuggingFaceTB/SmolLM2-1.7B-Instruct-GGUF/blob/main/smollm2-1.7b-instruct-q4_k_m.gguf) model file then save it in your *models/HuggingFaceTB* directory (next to the *docker-compose.yml* file).
+
+Once the two services are started, you can optionally configure an AI assistant at [http://localhost:3210](http://localhost:3210) and begin to chat with the SmolLM2-1.7B model:
+
+<img width="600px" height="auto" src="https://github.com/SamuelTallet/alpine-llama-cpp-server/blob/main/assets/alpine-llama-with-lobe-chat.png?raw=true">
 
 ## License
 
