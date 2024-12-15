@@ -112,7 +112,7 @@ services:
 
 Prior to run `docker compose up`, you will need to:
 
-Download the [smollm2-1.7b-instruct-q4_k_m.gguf](https://huggingface.co/HuggingFaceTB/SmolLM2-1.7B-Instruct-GGUF/blob/main/smollm2-1.7b-instruct-q4_k_m.gguf) model file then save it in your *models/HuggingFaceTB* directory (next to the *docker-compose.yml* file).
+Download the [smollm2-1.7b-instruct-q4_k_m.gguf](https://huggingface.co/HuggingFaceTB/SmolLM2-1.7B-Instruct-GGUF/blob/main/smollm2-1.7b-instruct-q4_k_m.gguf) model file then put it in your *models/HuggingFaceTB* directory (next to the *docker-compose.yml* file).
 
 Once the two services are started, you can optionally configure an AI assistant at [http://localhost:3210](http://localhost:3210) and begin to chat with the SmolLM2-1.7B model:
 
