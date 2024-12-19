@@ -1,4 +1,4 @@
-name: Build and Push Docker Image
+name: Build and push Docker image
 
 on:
   schedule:
@@ -30,7 +30,7 @@ jobs:
       - name: Set up QEMU # to support more platforms that amd64
         uses: docker/setup-qemu-action@v3
         with:
-          platforms: arm64,arm
+          platforms: arm64
 
       - name: Set up Docker Buildx # for cross-platform builds
         uses: docker/setup-buildx-action@v3
@@ -45,7 +45,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: |
             ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_REPOSITORY }}:${{ steps.tag.outputs.build_number }}
