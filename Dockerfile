@@ -5,13 +5,14 @@ FROM alpine:3.20 AS build
 # Set the working directory.
 WORKDIR /opt/llama.cpp
 
-# Target platform is populated by Docker Buildx.
+# The target platform is set by Docker Buildx.
 ARG TARGETPLATFORM
 
-# Since the GitHub Action uses QEMU for the ARM64 build, we need to disable the native build.
-# Otherwise, the build will fail. See: https://github.com/ggerganov/llama.cpp/issues/10933
-# The CPU architecture is set to "armv8-a" because it's the one used by the Raspberry Pi 3+.
+# Compile the official LLaMA.cpp HTTP Server.
 RUN \
+    # Since my GitHub Action uses QEMU for the ARM64 build, I need to disable the native build.
+    # Otherwise, the build will fail. See: https://github.com/ggerganov/llama.cpp/issues/10933
+    # The CPU architecture is set to "armv8-a" because it's the one used by the Raspberry Pi 3+.
     if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
         export GGML_NATIVE=OFF; \
         export GGML_CPU_ARM_ARCH="armv8-a"; \
@@ -19,7 +20,7 @@ RUN \
         export GGML_NATIVE=ON; \
         export GGML_CPU_ARM_ARCH=""; \
     fi && \
-    # Install build dependencies necessary to compile the LLaMA.cpp HTTP Server.
+    # Install build dependencies.
     # Using --no-cache to avoid caching the Alpine packages index
     # and --virtual to group build dependencies for easier cleanup.
     apk add --no-cache --virtual .build-deps \
