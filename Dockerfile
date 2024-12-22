@@ -5,10 +5,24 @@ FROM alpine:3.20 AS build
 # Set the working directory.
 WORKDIR /opt/llama.cpp
 
-# Install build dependencies necessary to compile the LLaMA.cpp HTTP Server.
-# Using --no-cache to avoid caching the Alpine packages index
-# and --virtual to group build dependencies for easier cleanup.
-RUN apk add --no-cache --virtual .build-deps \
+# Target platform is populated by Docker Buildx.
+ARG TARGETPLATFORM
+
+# Since the GitHub Action uses QEMU for the ARM64 build, we need to disable the native build.
+# Otherwise, the build will fail. See: https://github.com/ggerganov/llama.cpp/issues/10933
+# The CPU architecture is set to "armv8-a" because it's the one used by the Raspberry Pi 3+.
+RUN \
+    if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
+        export GGML_NATIVE=OFF; \
+        export GGML_CPU_ARM_ARCH="armv8-a"; \
+    else \
+        export GGML_NATIVE=ON; \
+        export GGML_CPU_ARM_ARCH=""; \
+    fi && \
+    # Install build dependencies necessary to compile the LLaMA.cpp HTTP Server.
+    # Using --no-cache to avoid caching the Alpine packages index
+    # and --virtual to group build dependencies for easier cleanup.
+    apk add --no-cache --virtual .build-deps \
     git=~2.45 \
     g++=~13.2 \
     make=~4.4 \
@@ -19,6 +33,10 @@ RUN apk add --no-cache --virtual .build-deps \
     git clone --depth=1 https://github.com/ggerganov/llama.cpp . && \
     # Configure the CMake build system.
     cmake -B build \
+    # On AMD64, use the native build; but on ARM64, disable it.
+    -DGGML_NATIVE=${GGML_NATIVE} \
+    # On ARM64, set the CPU architecture to "armv8-a". See the note above.
+    -DGGML_CPU_ARM_ARCH=${GGML_CPU_ARM_ARCH} \
     # Enable building only the llama-server executable.
     -DLLAMA_BUILD_SERVER=ON \
     # Enable support for cURL during build to allow the download of GGUF model at first run.
