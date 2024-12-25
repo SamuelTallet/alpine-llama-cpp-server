@@ -118,6 +118,21 @@ Once the two services are started, you can optionally configure an AI assistant 
 
 <img width="600px" height="auto" src="https://github.com/SamuelTallet/alpine-llama-cpp-server/blob/main/assets/alpine-llama-with-lobe-chat.png?raw=true">
 
+## Configuration
+
+You can pass environment variables to the Docker container to configure the Alpine LLaMA server:
+
+| **Environment Variable**  | **Description**                               | **Example Value**                       |
+|---------------------------|-----------------------------------------------|-----------------------------------------|
+| `LLAMA_ARG_HF_REPO`       | Hugging Face (HF) repository of a model       | `bartowski/Llama-3.2-1B-Instruct-GGUF`  |
+| `LLAMA_ARG_HF_FILE`       | and model file to use in this HF repository   | `Llama-3.2-1B-Instruct-Q4_K_M.gguf`     |
+| `LLAMA_ARG_MODEL`         | or path to a model file in your hard disk     | `/home/you/LLMs/Llama-3.2-1B.gguf`      |
+| `LLAMA_ARG_MODEL_URL`     | or URL to download the model file from.       | `https://your.host/Llama-3.2-1B.gguf`   |
+| `LLAMA_API_KEY`           | Key for authenticating HTTP API requests.     | `sk-n5V9UAJt6wRFfZQ4eDYk37uGzbKXdpNj`   |
+| `LLAMA_ARG_ALIAS`         | Model alias for clarity in HTTP calls or UI.  | `Llama-3.2-1B`                          |
+
+An exhaustive list of these variables can be found in the official [LLaMA.cpp server documentation](https://github.com/ggerganov/llama.cpp/blob/master/examples/server/README.md#usage).
+
 ## License
 
 Project licensed under MIT. See the [LICENSE](https://github.com/SamuelTallet/alpine-llama-cpp-server/blob/main/LICENSE) file for details.
