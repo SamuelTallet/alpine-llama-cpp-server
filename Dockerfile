@@ -32,6 +32,9 @@ RUN \
     curl-dev=~8.11 && \
     # Clone the llama.cpp repository with a shallow depth of one level to reduce data transfer.
     git clone --depth=1 https://github.com/ggerganov/llama.cpp . && \
+    # To save space, empty the index.html that will be embedded in the llama-server executable.
+    touch examples/server/public/index.html && \
+    gzip -f examples/server/public/index.html && \
     # Configure the CMake build system.
     cmake -B build \
     # On AMD64, use the native build; but on ARM64, disable it.
@@ -75,5 +78,8 @@ COPY --from=build /opt/llama-server .
 EXPOSE 8080
 
 # Run the LLaMA.cpp HTTP Server.
-# Notice the host is set to 0.0.0.0 to allow HTTP access outside container.
-CMD [ "sh", "-c", "/opt/llama.cpp/llama-server --host 0.0.0.0" ]
+CMD [ "sh", "-c", "/opt/llama.cpp/llama-server --host 0.0.0.0 --no-webui" ]
+
+# Notes for the above command:
+# - The host is set to 0.0.0.0 to allow HTTP access outside the container.
+# - The --no-webui flag is used to disable the embedded web interface. Cf. emptied out index.html
