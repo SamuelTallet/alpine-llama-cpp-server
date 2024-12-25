@@ -129,7 +129,7 @@ You can pass environment variables to the Docker container to configure the Alpi
 | `LLAMA_ARG_MODEL`         | or path to a model file in your hard disk     | `/home/you/LLMs/Llama-3.2-1B.gguf`      |
 | `LLAMA_ARG_MODEL_URL`     | or URL to download the model file from.       | `https://your.host/Llama-3.2-1B.gguf`   |
 | `LLAMA_API_KEY`           | Key for authenticating HTTP API requests.     | `sk-n5V9UAJt6wRFfZQ4eDYk37uGzbKXdpNj`   |
-| `LLAMA_ARG_ALIAS`         | Model alias for clarity in HTTP calls or UI.  | `Llama-3.2-1B`                          |
+| `LLAMA_ARG_ALIAS`         | Alias of the model in HTTP API requests.      | `Llama-3.2-1B`                          |
 
 An exhaustive list of these variables can be found in the official [LLaMA.cpp server documentation](https://github.com/ggerganov/llama.cpp/blob/master/examples/server/README.md#usage).
 
