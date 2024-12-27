@@ -17,12 +17,12 @@ jobs:
           path: llama.cpp
           fetch-depth: 0 # fetch all history to get tags as well
 
-      - name: Get llama.cpp tag (build number)
-        id: tag
+      - name: Get current llama.cpp tag
+        id: get_tag
         working-directory: llama.cpp
         run: |
           tag=$(git describe --tags --abbrev=0) || exit $?
-          echo "build_number=$tag" >> $GITHUB_OUTPUT
+          echo "tag=$tag" >> $GITHUB_OUTPUT
 
       - name: Checkout my repository
         uses: actions/checkout@v4
@@ -46,7 +46,9 @@ jobs:
         with:
           context: .
           platforms: linux/amd64,linux/arm64
+          build-args: |
+            LLAMA_GIT_TAG=${{ steps.get_tag.outputs.tag }}
           push: true
           tags: |
-            ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_REPOSITORY }}:${{ steps.tag.outputs.build_number }}
+            ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_REPOSITORY }}:${{ steps.get_tag.outputs.tag }}
             ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_REPOSITORY }}:latest
