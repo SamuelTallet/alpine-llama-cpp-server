@@ -2,11 +2,14 @@
 # Using a lightweight Alpine Linux base image for a minimal final image size.
 FROM alpine:3.20 AS build
 
+# The target platform, set by Docker Buildx.
+ARG TARGETPLATFORM
+
+# The LLaMA.cpp git tag, passed by the GitHub Action, to checkout and compile.
+ARG LLAMA_GIT_TAG
+
 # Set the working directory.
 WORKDIR /opt/llama.cpp
-
-# The target platform is set by Docker Buildx.
-ARG TARGETPLATFORM
 
 # Compile the official LLaMA.cpp HTTP Server.
 RUN \
@@ -30,8 +33,9 @@ RUN \
     cmake=~3.29 \
     linux-headers=~6.6 \
     curl-dev=~8.11 && \
-    # Clone the llama.cpp repository with a shallow depth of one level to reduce data transfer.
-    git clone --depth=1 https://github.com/ggerganov/llama.cpp . && \
+    # Checkout the llama.cpp repository to the wanted version (git tag).
+    # A shallow clone (--depth 1) is used to minimize the data transfer.
+    git clone -b ${LLAMA_GIT_TAG} --depth 1 https://github.com/ggerganov/llama.cpp . && \
     # To save space, empty the index.html that will be embedded in the llama-server executable.
     touch examples/server/public/index.html && \
     gzip -f examples/server/public/index.html && \
