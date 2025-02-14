@@ -1,6 +1,6 @@
 # Build stage.
 # Using a lightweight Alpine Linux base image for a minimal final image size.
-FROM alpine:3.20 AS build
+FROM alpine:3.21 AS build
 
 # The target platform, set by Docker Buildx.
 ARG TARGETPLATFORM
@@ -27,12 +27,12 @@ RUN \
     # Using --no-cache to avoid caching the Alpine packages index
     # and --virtual to group build dependencies for easier cleanup.
     apk add --no-cache --virtual .build-deps \
-    git=~2.45 \
-    g++=~13.2 \
+    git=~2.47 \
+    g++=~14.2 \
     make=~4.4 \
-    cmake=~3.29 \
+    cmake=~3.31 \
     linux-headers=~6.6 \
-    curl-dev=~8.11 && \
+    curl-dev=~8.12 && \
     # Checkout the llama.cpp repository to the wanted version (git tag).
     # A shallow clone (--depth 1) is used to minimize the data transfer.
     git clone -b ${LLAMA_GIT_TAG} --depth 1 https://github.com/ggerganov/llama.cpp . && \
@@ -64,16 +64,16 @@ RUN \
 
 # Final stage.
 # Starting a new stage to create a smaller, cleaner image containing only the runtime environment.
-FROM alpine:3.20
+FROM alpine:3.21
 
 # Set the working directory.
 WORKDIR /opt/llama.cpp
 
 # Install runtime dependencies: C++, cURL & OpenMP.
 RUN apk add --no-cache \
-    libstdc++=~13.2 \
-    libcurl=~8.11 \
-    libgomp=~13.2
+    libstdc++=~14.2 \
+    libcurl=~8.12 \
+    libgomp=~14.2
 
 # Copy the compiled llama-server executable from the build stage to the current working directory.
 COPY --from=build /opt/llama-server .
