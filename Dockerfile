@@ -14,7 +14,7 @@ WORKDIR /opt/llama.cpp
 # Compile the official LLaMA.cpp HTTP Server.
 RUN \
     # Since my GitHub Action uses QEMU for the ARM64 build, I need to disable the native build.
-    # Otherwise, the build will fail. See: https://github.com/ggerganov/llama.cpp/issues/10933
+    # Otherwise, the build will fail. See: https://github.com/ggml-org/llama.cpp/issues/10933
     # The CPU architecture is set to "armv8-a" because it's the one used by the Raspberry Pi 3+.
     if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
         export GGML_NATIVE=OFF; \
@@ -35,7 +35,7 @@ RUN \
     curl-dev=~8.12 && \
     # Checkout the llama.cpp repository to the wanted version (git tag).
     # A shallow clone (--depth 1) is used to minimize the data transfer.
-    git clone -b ${LLAMA_GIT_TAG} --depth 1 https://github.com/ggerganov/llama.cpp . && \
+    git clone -b ${LLAMA_GIT_TAG} --depth 1 https://github.com/ggml-org/llama.cpp . && \
     # To save space, empty the index.html that will be embedded in the llama-server executable.
     touch examples/server/public/index.html && \
     gzip -f examples/server/public/index.html && \
