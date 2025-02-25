@@ -131,7 +131,7 @@ You can pass environment variables to the Docker container to configure the Alpi
 | `LLAMA_API_KEY`           | Key for authenticating HTTP API requests.     | `sk-n5V9UAJt6wRFfZQ4eDYk37uGzbKXdpNj`   |
 | `LLAMA_ARG_ALIAS`         | Alias of the model in HTTP API requests.      | `Llama-3.2-1B`                          |
 
-An exhaustive list of these variables can be found in the official [LLaMA.cpp server documentation](https://github.com/ggerganov/llama.cpp/blob/master/examples/server/README.md#usage).
+An exhaustive list of these variables can be found in the official [LLaMA.cpp server documentation](https://github.com/ggml-org/llama.cpp/blob/master/examples/server/README.md#usage).
 
 ## License
 
