@@ -13,7 +13,7 @@ jobs:
       - name: Checkout llama.cpp repository
         uses: actions/checkout@v4
         with:
-          repository: ggerganov/llama.cpp
+          repository: ggml-org/llama.cpp
           path: llama.cpp
           fetch-depth: 0 # fetch all history to get tags as well
 
