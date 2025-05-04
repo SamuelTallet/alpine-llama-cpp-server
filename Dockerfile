@@ -37,8 +37,8 @@ RUN \
     # A shallow clone (--depth 1) is used to minimize the data transfer.
     git clone -b ${LLAMA_GIT_TAG} --depth 1 https://github.com/ggml-org/llama.cpp . && \
     # To save space, empty the index.html that will be embedded in the llama-server executable.
-    touch examples/server/public/index.html && \
-    gzip -f examples/server/public/index.html && \
+    touch tools/server/public/index.html && \
+    gzip -f tools/server/public/index.html && \
     # Configure the CMake build system.
     cmake -B build \
     # On AMD64, use the native build; but on ARM64, disable it.
