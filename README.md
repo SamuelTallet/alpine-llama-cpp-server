@@ -18,14 +18,13 @@ This Docker image is particularly suited for:
 
 ### Standalone
 
-You can start a local standalone HTTP inference server who listens at the port 50000 and leverages the [Qwen2.5-Coder 1.5B quantized model](https://huggingface.co/bartowski/Qwen2.5-Coder-1.5B-Instruct-GGUF) available on Hugging Face (HF) with:
+You can start a local standalone HTTP inference server who listens at the port 50000 and leverages the [Qwen3 0.6B quantized model](https://huggingface.co/unsloth/Qwen3-0.6B-GGUF) available on Hugging Face (HF) with:
 
 ```bash
 docker run --name alpine-llama --publish 50000:8080 \
-  --env LLAMA_ARG_HF_REPO=bartowski/Qwen2.5-Coder-1.5B-Instruct-GGUF \
-  --env LLAMA_ARG_HF_FILE=Qwen2.5-Coder-1.5B-Instruct-Q4_K_M.gguf \
+  --env LLAMA_ARG_HF_REPO=unsloth/Qwen3-0.6B-GGUF \
   --env LLAMA_API_KEY=sk-xxxx \
-  --env LLAMA_ARG_ALIAS=qwen2.5-coder-1.5b \
+  --env LLAMA_ARG_ALIAS=qwen3-0.6b \
   samueltallet/alpine-llama-cpp-server
 ```
 
@@ -63,7 +62,7 @@ async function extractProductMeta() {
     messages: [
       { role: "user", content: productDescription }
     ],
-    model: "qwen2.5-coder-1.5b",
+    model: "qwen3-0.6b",
     temperature: 0.2,
     response_format: {
       type: "json_schema",
