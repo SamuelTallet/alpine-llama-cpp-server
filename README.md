@@ -18,7 +18,7 @@ This Docker image is particularly suited for:
 
 ### Standalone
 
-You can start a local standalone HTTP inference server who listens at the port 50000 and leverages the [Qwen3 0.6B quantized model](https://huggingface.co/unsloth/Qwen3-0.6B-GGUF) available on Hugging Face (HF) with:
+You can start a local standalone HTTP inference server who listens at the port 50000 and leverages a [Qwen3 0.6B quantized model](https://huggingface.co/unsloth/Qwen3-0.6B-GGUF) available on Hugging Face (HF) with:
 
 ```bash
 docker run --name alpine-llama --publish 50000:8080 \
