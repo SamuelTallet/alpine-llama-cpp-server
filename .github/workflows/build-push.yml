@@ -2,7 +2,7 @@ name: Build and push Docker image
 
 on:
   schedule:
-    - cron: '0 5 * * *'  # everyday at 5 AM UTC
+    - cron: '0 5 * * 2'  # every Tuesday at 5 AM UTC
   workflow_dispatch: # on demand
 
 jobs:
