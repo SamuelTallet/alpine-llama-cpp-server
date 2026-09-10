@@ -1,15 +1,15 @@
 <div align="center">
 
-  <img width="250px" height="auto" src="https://github.com/SamuelTallet/alpine-llama-cpp-server/blob/main/assets/alpine-llama-image-size-rounded-with-bubbles-500px.png?raw=true">
+  <img width="250px" height="auto" src="https://raw.githubusercontent.com/SamuelTallet/alpine-llama-cpp-server/refs/heads/main/assets/alpine-llama-image-size-rounded-with-bubbles-500px.png">
   
-  Alpine LLaMA is an ultra-compact Docker image (less than 12 MB), providing a [LLaMA.cpp](https://github.com/ggml-org/llama.cpp) HTTP server for language model inference.
+  Alpine LLaMA is an ultra-compact Docker image (less than 14 MB), providing a [LLaMA.cpp](https://github.com/ggml-org/llama.cpp) HTTP server for language model inference.
 
 </div>
 
 <div align="center">
 
   [![Available on Docker Hub](https://img.shields.io/badge/available_on-dockerhub-2496ed?style=flat&logo=docker&color=%232496ed)](https://hub.docker.com/r/samueltallet/alpine-llama-cpp-server)
-  ![Docker Image Size](https://img.shields.io/docker/image-size/samueltallet/alpine-llama-cpp-server?style=flat&color=%236db33f)
+  [![Docker Image Size](https://img.shields.io/docker/image-size/samueltallet/alpine-llama-cpp-server?style=flat&color=%236db33f)](https://hub.docker.com/layers/samueltallet/alpine-llama-cpp-server/latest)
 
 </div>
 
