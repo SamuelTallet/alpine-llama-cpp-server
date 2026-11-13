@@ -83,7 +83,7 @@ async function extractProductMeta() {
 }
 
 extractProductMeta();
-// > { "name": "UrbanShoes 3.0", "materials": ["apple leather", "recycled rubber"], "colors": ["brown", "green"], "price": 2499.90, "currency": "EUR" }
+// > { "name": "UrbanShoes 3.0", "materials": ["apple leather", "recycled rubber"], "colors": ["brown", "green"], "price": 79.90, "currency": "EUR" }
 ```
 
 ### With a GUI
