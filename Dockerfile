@@ -85,6 +85,7 @@ RUN apk add --no-cache \
 COPY --from=build /opt/llama-server /opt/bigstack.so ./
 
 # Server will listen on 8080.
+ENV LLAMA_ARG_PORT=8080
 EXPOSE 8080
 
 # Preload the stack-size fix, then run the LLaMA.cpp HTTP Server.
