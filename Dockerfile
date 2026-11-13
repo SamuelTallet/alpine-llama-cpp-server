@@ -91,5 +91,5 @@ EXPOSE 8080
 # Preload the stack-size fix, then run the LLaMA.cpp HTTP Server.
 ENV LD_PRELOAD=/opt/llama.cpp/bigstack.so
 
-CMD [ "/opt/llama.cpp/llama-server", "--host", "0.0.0.0", "--no-webui" ]
+CMD [ "/opt/llama.cpp/llama-server", "--host", "0.0.0.0", "--no-ui" ]
 # 0.0.0.0 allows the server to be accessible from outside the container.
