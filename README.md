@@ -50,7 +50,7 @@ const inferenceClient = new OpenAI({
 
 const productDescription = `UrbanShoes 3.0: These brown and green shoes,
 suitable for casual wear, are made of apple leather and recycled rubber.
-They are priced at only €2499.90.`; // 👈😄 This is not a typo.
+They are priced at only €79.90.`;
 
 const productSchema = {
   properties: {
