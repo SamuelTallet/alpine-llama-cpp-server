@@ -131,8 +131,7 @@ You can pass environment variables to the Docker container to configure the Alpi
 |---------------------------|-----------------------------------------------|-----------------------------------------|
 | `LLAMA_ARG_HF_REPO`       | Hugging Face (HF) repository of a model       | `bartowski/Llama-3.2-1B-Instruct-GGUF`  |
 | `LLAMA_ARG_HF_FILE`       | and model file to use in this HF repository   | `Llama-3.2-1B-Instruct-Q4_K_M.gguf`     |
-| `LLAMA_ARG_MODEL`         | or path to a model file in your hard disk     | `/home/you/LLMs/Llama-3.2-1B.gguf`      |
-| `LLAMA_ARG_MODEL_URL`     | or URL to download the model file from.       | `https://your.host/Llama-3.2-1B.gguf`   |
+| `LLAMA_ARG_MODEL`         | or path to a model file in your hard disk.    | `/home/you/LLMs/Llama-3.2-1B.gguf`      |
 | `LLAMA_API_KEY`           | Key for authenticating HTTP API requests.     | `sk-n5V9UAJt6wRFfZQ4eDYk37uGzbKXdpNj`   |
 | `LLAMA_ARG_ALIAS`         | Alias of the model in HTTP API requests.      | `Llama-3.2-1B`                          |
 
