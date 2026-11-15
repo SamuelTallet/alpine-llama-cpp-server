@@ -2,7 +2,7 @@
 
   <img width="250px" height="auto" src="https://raw.githubusercontent.com/SamuelTallet/alpine-llama-cpp-server/refs/heads/main/assets/alpine-llama-image-size-rounded-with-bubbles-500px.png">
   
-  Alpine LLaMA is an ultra-compact Docker image (less than 14 MB), providing a [LLaMA.cpp](https://github.com/ggml-org/llama.cpp) HTTP server for language model inference.
+  Alpine LLaMA is an ultra-compact Docker image (less than 16 MB), providing a [LLaMA.cpp](https://github.com/ggml-org/llama.cpp) HTTP server for language model inference.
 
 </div>
 
