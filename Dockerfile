@@ -19,12 +19,11 @@ RUN \
     # Since my GitHub Action uses QEMU for the ARM64 build, I need to disable the native build.
     # Otherwise, the build will fail. See: https://github.com/ggml-org/llama.cpp/issues/10933
     # The CPU architecture is set to "armv8-a" because it's the one used by the Raspberry Pi 3+.
+    # On AMD64, I target AVX2 to run on most CPUs.
     if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
-        export GGML_NATIVE=OFF; \
-        export GGML_CPU_ARM_ARCH="armv8-a"; \
+        set -- -DGGML_CPU_ARM_ARCH=armv8-a; \
     else \
-        export GGML_NATIVE=ON; \
-        export GGML_CPU_ARM_ARCH=""; \
+        set -- -DGGML_SSE42=ON -DGGML_AVX=ON -DGGML_AVX2=ON -DGGML_FMA=ON -DGGML_F16C=ON -DGGML_BMI2=ON; \
     fi && \
     # Install build dependencies.
     # Using --no-cache to avoid caching the Alpine packages index
@@ -41,10 +40,9 @@ RUN \
     git clone -b ${LLAMA_GIT_TAG} --depth 1 https://github.com/ggml-org/llama.cpp . && \
     # Configure the CMake build system.
     cmake -B build \
-    # On AMD64, use the native build; but on ARM64, disable it.
-    -DGGML_NATIVE=${GGML_NATIVE} \
-    # On ARM64, set the CPU architecture to "armv8-a". See the note above.
-    -DGGML_CPU_ARM_ARCH=${GGML_CPU_ARM_ARCH} \
+    # Disable the native build and set the target CPU. See the notes above.
+    -DGGML_NATIVE=OFF \
+    "$@" \
     # Build only the llama-server executable.
     -DLLAMA_BUILD_SERVER=ON \
     # Don't build the embedded web interface to save space.
