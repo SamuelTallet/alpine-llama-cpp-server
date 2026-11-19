@@ -49,8 +49,8 @@ RUN \
     -DLLAMA_BUILD_WEBUI=OFF \
     # Include the GGML lib inside this executable to ease deployment...
     -DBUILD_SHARED_LIBS=OFF && \
-    # Compile the llama-server target in Release mode for a production use.
-    cmake --build build --target llama-server --config Release && \
+    # Compile the llama-server target in Release mode for a production use, using all cores.
+    cmake --build build --target llama-server --config Release --parallel "$(nproc)" && \
     # Remove non-essential symbols from this executable to save space.
     strip build/bin/llama-server && \
     # Copy this executable in a safe place...
